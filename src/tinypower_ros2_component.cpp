@@ -12,6 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <string>
+#include <vector>
+
 #include "tinypower_ros2/tinypower_ros2_component.hpp"
 
 namespace tinypower_ros2
@@ -45,7 +48,7 @@ TinypowerROS2Component::TinypowerROS2Component(const rclcpp::NodeOptions & optio
 
   timer_ =
     create_wall_timer(
-    std::chrono::milliseconds(int(1.0 / hz_ * 1e3)),
+    std::chrono::milliseconds(static_cast<int>(1.0 / hz_ * 1e3)),
     std::bind(&TinypowerROS2Component::timer_callback, this));
   vel_sub_ =
     create_subscription<geometry_msgs::msg::Twist>(
@@ -267,4 +270,4 @@ geometry_msgs::msg::Quaternion TinypowerROS2Component::get_quaternion_msg_from_y
   return tf2::toMsg(q);
 }
 
-}
+}  // namespace tinypower_ros2

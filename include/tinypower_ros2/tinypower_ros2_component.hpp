@@ -53,10 +53,6 @@ extern "C" {
 }  // extern "C"
 #endif
 
-#include <chrono>
-#include <thread>
-#include <mutex>
-
 #include <fcntl.h>
 #include <poll.h>
 #include <sys/types.h>
@@ -64,6 +60,13 @@ extern "C" {
 #include <sys/ioctl.h>
 #include <termios.h>
 #include <unistd.h>
+
+#include <chrono>
+#include <memory>
+#include <mutex>
+#include <string>
+#include <thread>
+#include <vector>
 
 #include "rclcpp/rclcpp.hpp"
 #include "geometry_msgs/msg/twist.hpp"
