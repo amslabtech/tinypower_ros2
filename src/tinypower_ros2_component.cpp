@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -43,8 +44,11 @@ TinypowerROS2Component::TinypowerROS2Component(const rclcpp::NodeOptions & optio
   get_parameter("robot_frame_id", robot_frame_id_);
   declare_parameter<std::string>("odom_frame_id", "odom");
   get_parameter("odom_frame_id", odom_frame_id_);
+  declare_parameter<bool>("enable_tf", true);
+  get_parameter("enable_tf", enable_tf_);
 
   odom_.pose.pose.orientation = get_quaternion_msg_from_yaw(0);
+  tfb_ = std::make_shared<tf2_ros::TransformBroadcaster>(shared_from_this());
 
   timer_ =
     create_wall_timer(
@@ -81,6 +85,9 @@ void TinypowerROS2Component::timer_callback(void)
       update_odometry((now - last_time_).nanoseconds() * 1e-9);
       odom_.header.stamp = now;
       odom_pub_->publish(odom_);
+      if (enable_tf_) {
+        publish_odom_tf();
+      }
     } else {
       is_first_timer_callback_ = false;
     }
@@ -268,6 +275,18 @@ geometry_msgs::msg::Quaternion TinypowerROS2Component::get_quaternion_msg_from_y
   tf2::Quaternion q;
   q.setRPY(0, 0, yaw);
   return tf2::toMsg(q);
+}
+
+void TinypowerROS2Component::publish_odom_tf(void)
+{
+  geometry_msgs::msg::TransformStamped transform;
+  transform.header = odom_.header;
+  transform.child_frame_id = odom_.child_frame_id;
+  transform.transform.translation.x = odom_.pose.pose.position.x;
+  transform.transform.translation.y = odom_.pose.pose.position.y;
+  transform.transform.translation.z = odom_.pose.pose.position.z;
+  transform.transform.rotation = odom_.pose.pose.orientation;
+  tfb_->sendTransform(transform);
 }
 
 }  // namespace tinypower_ros2

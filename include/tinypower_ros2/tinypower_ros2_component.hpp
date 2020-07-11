@@ -70,9 +70,11 @@ extern "C" {
 
 #include "rclcpp/rclcpp.hpp"
 #include "geometry_msgs/msg/twist.hpp"
+#include "geometry_msgs/msg/transform_stamped.hpp"
 #include "nav_msgs/msg/odometry.hpp"
-#include "tf2_geometry_msgs/tf2_geometry_msgs.h"
 #include "tf2/utils.h"
+#include "tf2_geometry_msgs/tf2_geometry_msgs.h"
+#include "tf2_ros/transform_broadcaster.h"
 
 namespace tinypower_ros2
 {
@@ -99,6 +101,7 @@ private:
   std::vector<std::string> split(const std::string & str, const std::string & delimiter);
   void update_odometry(double dt);
   geometry_msgs::msg::Quaternion get_quaternion_msg_from_yaw(const double yaw);
+  void publish_odom_tf(void);
 
   std::string port_name_;
   int baud_rate_;
@@ -110,6 +113,7 @@ private:
   int poll_timeout_;
   std::string robot_frame_id_;
   std::string odom_frame_id_;
+  bool enable_tf_;
   rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr vel_sub_;
   rclcpp::Publisher<nav_msgs::msg::Odometry>::SharedPtr odom_pub_;
   rclcpp::TimerBase::SharedPtr timer_;
@@ -122,6 +126,7 @@ private:
   rclcpp::Time last_time_;
   bool is_first_timer_callback_;
   nav_msgs::msg::Odometry odom_;
+  std::shared_ptr<tf2_ros::TransformBroadcaster> tfb_;
 };
 
 }  // namespace tinypower_ros2
