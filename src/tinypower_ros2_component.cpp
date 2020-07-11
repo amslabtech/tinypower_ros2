@@ -135,7 +135,7 @@ void TinypowerROS2Component::send_velocity(float v, float omega)
   ss << "VCX" << v << "\n\r" << "VCR" << omega << "\n\r";
   const std::string data = ss.str();
   RCLCPP_INFO(get_logger(), data);
-  if (write_data(data)) {
+  if (write_data(data) <= 0) {
     RCLCPP_ERROR(get_logger(), "Failed to send data");
   }
 }
