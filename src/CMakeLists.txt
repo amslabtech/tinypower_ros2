@@ -26,7 +26,7 @@ ament_target_dependencies(tinypower_ros2_node
     rclcpp
     rclcpp_components
     geometry_msgs
-    nav_msgs 
+    nav_msgs
 )
 
 install(TARGETS
