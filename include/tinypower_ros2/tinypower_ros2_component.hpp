@@ -126,7 +126,7 @@ private:
   rclcpp::Time last_time_;
   bool is_first_timer_callback_;
   nav_msgs::msg::Odometry odom_;
-  std::shared_ptr<tf2_ros::TransformBroadcaster> tfb_;
+  std::unique_ptr<tf2_ros::TransformBroadcaster> tfb_;
 };
 
 }  // namespace tinypower_ros2

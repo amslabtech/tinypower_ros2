@@ -48,7 +48,7 @@ TinypowerROS2Component::TinypowerROS2Component(const rclcpp::NodeOptions & optio
   get_parameter("enable_tf", enable_tf_);
 
   odom_.pose.pose.orientation = get_quaternion_msg_from_yaw(0);
-  tfb_ = std::make_shared<tf2_ros::TransformBroadcaster>(shared_from_this());
+  tfb_ = std::make_unique<tf2_ros::TransformBroadcaster>(*this);
 
   timer_ =
     create_wall_timer(
