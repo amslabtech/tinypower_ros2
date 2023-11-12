@@ -20,7 +20,7 @@ def generate_launch_description():
     return launch.LaunchDescription([
         launch_ros.actions.Node(
             package='tinypower_ros2',
-            node_namespace='',
+            namespace='',
             executable='tinypower_ros2_node',
             name='tinypower_driver',
             parameters=[],
