@@ -101,9 +101,9 @@ void TinypowerROS2Component::open_port(const std::string & port_name)
   while (fd_ < 0 && rclcpp::ok()) {
     fd_ = open(port_name.c_str(), O_RDWR | O_NONBLOCK | O_NOCTTY);
     if (fd_ >= 0) {
-      RCLCPP_INFO(get_logger(), "Successfully connected to the device: " + port_name);
+      RCLCPP_INFO_STREAM(get_logger(), "Successfully connected to the device: " + port_name);
     } else {
-      RCLCPP_ERROR(get_logger(), "Failed to open port: " + port_name);
+      RCLCPP_ERROR_STREAM(get_logger(), "Failed to open port: " + port_name);
     }
     rate.sleep();
   }
@@ -141,7 +141,7 @@ void TinypowerROS2Component::send_velocity(float v, float omega)
   std::stringstream ss;
   ss << "VCX" << v << "\n\r" << "VCR" << omega << "\n\r";
   const std::string data = ss.str();
-  RCLCPP_INFO(get_logger(), data);
+  RCLCPP_INFO_STREAM(get_logger(), data);
   if (write_data(data) <= 0) {
     RCLCPP_ERROR(get_logger(), "Failed to send data");
   }

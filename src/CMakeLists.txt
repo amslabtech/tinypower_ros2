@@ -13,6 +13,7 @@ ament_target_dependencies(tinypower_ros2_component
     geometry_msgs
     nav_msgs
     tf2_ros
+    tf2_geometry_msgs
 )
 
 add_executable(tinypower_ros2_node
